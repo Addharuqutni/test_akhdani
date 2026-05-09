@@ -23,6 +23,19 @@ class City extends Model
         ];
     }
 
+    /**
+     * Scope untuk filter hanya kota yang aktif.
+     * 
+     * Scope ini digunakan untuk query kota yang is_active = true.
+     * Kota yang nonaktif tidak akan muncul di dropdown saat create pengajuan.
+     * 
+     * Cara penggunaan:
+     * - City::active()->get() → Ambil semua kota aktif
+     * - City::active()->where('name', 'Jakarta')->first() → Cari Jakarta yang aktif
+     * 
+     * @param \Illuminate\Database\Eloquent\Builder $query Query builder
+     * @return \Illuminate\Database\Eloquent\Builder Query builder dengan filter is_active = true
+     */
     public function scopeActive($query)
     {
         return $query->where('is_active', true);

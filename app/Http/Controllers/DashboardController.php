@@ -9,6 +9,29 @@ use Illuminate\View\View;
 
 class DashboardController extends Controller
 {
+    /**
+     * Tampilkan halaman dashboard dengan statistik pengajuan perjalanan dinas.
+     * 
+     * Function ini akan menampilkan statistik yang berbeda tergantung role user:
+     * 
+     * **Untuk Pegawai:**
+     * - Total pengajuan milik pegawai tersebut
+     * - Jumlah pengajuan yang sedang disubmit (menunggu approval)
+     * - Jumlah pengajuan yang sudah diapprove
+     * - Jumlah pengajuan yang ditolak
+     * 
+     * **Untuk Admin/SDM:**
+     * - Total semua pengajuan di sistem
+     * - Jumlah pengajuan yang menunggu approval
+     * - Jumlah pengajuan yang sudah diapprove
+     * - Jumlah pengajuan yang ditolak
+     * - Total uang saku yang sudah diapprove (dalam rupiah)
+     * 
+     * Note: Menggunakan `clone $base` untuk menghindari query builder mutation.
+     * 
+     * @param Request $request HTTP request dengan user yang sedang login
+     * @return View View dashboard dengan data statistik
+     */
     public function index(Request $request): View
     {
         $user = $request->user();

@@ -33,9 +33,44 @@ class BusinessTripRequest extends Model
         ];
     }
 
+    /**
+     * Relasi ke user yang membuat pengajuan (pegawai).
+     * 
+     * @return BelongsTo Relasi belongsTo ke User model
+     */
     public function employee(): BelongsTo { return $this->belongsTo(User::class, 'employee_id'); }
+    
+    /**
+     * Relasi ke user yang meng-approve/reject pengajuan (SDM).
+     * 
+     * @return BelongsTo Relasi belongsTo ke User model
+     */
     public function approver(): BelongsTo { return $this->belongsTo(User::class, 'approved_by'); }
+    
+    /**
+     * Relasi ke kota asal perjalanan.
+     * 
+     * @return BelongsTo Relasi belongsTo ke City model
+     */
     public function originCity(): BelongsTo { return $this->belongsTo(City::class, 'origin_city_id'); }
+    
+    /**
+     * Relasi ke kota tujuan perjalanan.
+     * 
+     * @return BelongsTo Relasi belongsTo ke City model
+     */
     public function destinationCity(): BelongsTo { return $this->belongsTo(City::class, 'destination_city_id'); }
+    
+    /**
+     * Relasi ke history perubahan status pengajuan.
+     * 
+     * Setiap pengajuan memiliki banyak history yang mencatat:
+     * - Perubahan status (DRAFT → SUBMITTED → APPROVED/REJECTED/CANCELLED)
+     * - Siapa yang melakukan perubahan
+     * - Kapan perubahan dilakukan
+     * - Catatan/alasan perubahan
+     * 
+     * @return HasMany Relasi hasMany ke BusinessTripStatusHistory model
+     */
     public function statusHistories(): HasMany { return $this->hasMany(BusinessTripStatusHistory::class); }
 }
